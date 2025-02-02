@@ -31,9 +31,11 @@ const CreateProducts = () => {
       await createProducts(productInfo).unwrap();
 
       toast.success("Product created successfully");
-    } catch (error) {
-      console.error("Error creating product:", error);
-      toast.error("Something went wrong");
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error("Error creating product:", error.data.error);
+      toast.error(error.data.error);
     }
   };
 

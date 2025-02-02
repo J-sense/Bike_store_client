@@ -1,5 +1,3 @@
-import React from "react";
-
 const NewsLatter = () => {
   return (
     <div className="bg-[#E2C595] flex flex-col items-center p-6 sm:p-10 md:p-16 space-y-6 sm:space-y-8 md:space-y-10 text-center">

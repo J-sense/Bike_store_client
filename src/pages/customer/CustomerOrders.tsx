@@ -1,70 +1,98 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
+
 import { useYourOrderQuery } from "../../redux/features/order/Order.Api";
 import { useAppSelector } from "../../redux/hooks";
-import { Button, Table, TableColumnsType } from "antd";
-import { TProduct } from "../../type/types";
+import { Table, TableColumnsType } from "antd";
 
 const CustomerOrders = () => {
   interface DataType {
     key: string;
-    name: string;
-    brand: string;
-    price: number;
+    email: string;
+    productId: string;
     quantity: number;
+    status: string;
+    totalPrice: number;
+    transactionStatus: string;
   }
+
+  // Get user from Redux store
   const user: any = useAppSelector((state) => state.auth.user);
-  console.log(user);
-  const { data: orderData, isFetching } = useYourOrderQuery(user.userId);
-  console.log(orderData);
-  const allProducts = orderData?.data?.map(
-    ({ brand, category, name, price, quantity, _id }: TProduct) => ({
-      key: _id,
-      name,
-      category,
-      brand,
+
+  // Fetch order data
+  const {
+    data: ProductsData,
+    isFetching,
+    error,
+  } = useYourOrderQuery(user?.userId, { skip: !user?.userId });
+
+  // Handle case where the user is not logged in
+  if (!user?.userId) {
+    return (
+      <div className="text-center text-red-500">
+        Please log in to view your orders.
+      </div>
+    );
+  }
+
+  // Handle loading and error states
+  if (isFetching) {
+    return <div className="text-center">Loading orders...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="text-center text-red-500">
+        Failed to fetch orders. Please try again.
+      </div>
+    );
+  }
+
+  // Process the data
+  const allOrders = ProductsData?.data?.map(
+    ({
+      email,
+      product,
       quantity,
-      price,
+      status,
+      totalPrice,
+      transaction,
+      _id,
+    }: any) => ({
+      key: _id,
+      email: email || "N/A",
+      productId: product || "N/A",
+      quantity: quantity || 0,
+      status: status || "N/A",
+      totalPrice: totalPrice || 0,
+      transactionStatus: transaction?.transactionStatus || "N/A",
     })
   );
+
+  // Table columns
   const columns: TableColumnsType<DataType> = [
-    { title: "Product Name", dataIndex: "name", key: "name" },
-    { title: "Brand", dataIndex: "brand", key: "brand" },
-    { title: "Price", dataIndex: "price", key: "price", responsive: ["md"] },
+    { title: "Email", dataIndex: "email", key: "email" },
+    { title: "Product ID", dataIndex: "productId", key: "productId" },
+    { title: "Quantity", dataIndex: "quantity", key: "quantity" },
+    { title: "Status", dataIndex: "status", key: "status" },
+    { title: "Total Price", dataIndex: "totalPrice", key: "totalPrice" },
     {
-      title: "Quantity",
-      dataIndex: "quantity",
-      key: "quantity",
-      responsive: ["lg"],
-    },
-    {
-      title: "Stock",
-      key: "stock",
-      render: (item) =>
-        item.quantity > 0 ? (
-          <Button type="primary" className="bg-green-500 border-none">
-            In Stock
-          </Button>
-        ) : (
-          <Button type="default" disabled>
-            Out of Stock
-          </Button>
-        ),
+      title: "Transaction Status",
+      dataIndex: "transactionStatus",
+      key: "transactionStatus",
     },
   ];
+
   return (
-    <div className="bg-gradient-to-r from-[#E0FFE7] via-[#CCFFF5] to-[#F0FFF4] h-[100%] ">
+    <div className="bg-gradient-to-r from-[#E0FFE7] via-[#CCFFF5] to-[#F0FFF4] h-[100%] p-4">
       <div className="overflow-x-auto">
         <Table<DataType>
           columns={columns}
-          dataSource={allProducts}
+          dataSource={allOrders}
           loading={isFetching}
           pagination={{ pageSize: 6 }}
           scroll={{ x: "max-content" }}
         />
       </div>
-
-      {/* Update Modal */}
     </div>
   );
 };

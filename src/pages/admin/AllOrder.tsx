@@ -1,5 +1,5 @@
 import { Table, TableColumnsType } from "antd";
-import React from "react";
+
 // import { TProduct } from "../../type/types";
 import { useGetAllOrderQuery } from "../../redux/features/order/Order.Api";
 

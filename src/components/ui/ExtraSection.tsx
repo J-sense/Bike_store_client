@@ -1,4 +1,3 @@
-import React from "react";
 import extraImg from "../../assets/images/extraImg.jpg";
 const ExtraSection = () => {
   return (

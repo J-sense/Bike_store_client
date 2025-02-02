@@ -1,4 +1,3 @@
-import React from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useAllProductsQuery } from "../../redux/features/products/Products.Api";
 import { TProduct } from "../../type/types";

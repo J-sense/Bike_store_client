@@ -3,7 +3,7 @@ import imgTwo from "../../assets/images/aboutpic2.jpg";
 import about3 from "../../assets/images/about3.jpg";
 const AboutUs = () => {
   return (
-    <div className="bg-[#FFFFFF]">
+    <div className="bg-[#FFFFFF] my-36">
       <div className="text-center flex flex-col items-center my-16 px-4">
         <h1 className="text-4xl sm:text-5xl md:text-6xl text-black">
           About us

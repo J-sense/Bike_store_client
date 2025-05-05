@@ -19,7 +19,7 @@ const AllProducts = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 md:my-28">
       {/* Hero Section */}
       <div className="relative bg-[#101B1F] text-white py-24 px-4 overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>

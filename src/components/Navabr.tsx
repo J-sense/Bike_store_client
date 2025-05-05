@@ -81,7 +81,7 @@ const Navbar = () => {
               <>
                 <NavLink
                   to="/dashboard"
-                  className="px-3 py-1.5 text-sm font-medium rounded-md hover:bg-gray-800/50 hover:text-yellow-400 transition-all"
+                  className="px-3 py-1.5 text-sm font-medium rounded-md text-slate-400 hover:bg-gray-800/50 hover:text-yellow-400 transition-all"
                 >
                   Dashboard
                 </NavLink>

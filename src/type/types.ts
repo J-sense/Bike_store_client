@@ -6,6 +6,7 @@ export type TUSer = {
 };
 
 export type TProduct = {
+  image: string;
   brand: string;
   category: string;
   description: string;

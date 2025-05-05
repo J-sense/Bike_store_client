@@ -27,7 +27,7 @@ const Checkout = () => {
 
   // Fetching cart data from Redux store
   const cart = useSelector((state: RootState) => state.cart.items);
-
+  console.log(cart);
   const handleRemove = (id: string) => {
     dispatch(removeFromCart(id));
   };

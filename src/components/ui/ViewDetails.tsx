@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { NavLink, useParams } from "react-router-dom";
 import { useAllProductsQuery } from "../../redux/features/products/Products.Api";
 import { TProduct } from "../../type/types";
@@ -5,200 +6,231 @@ import productImg from "../../assets/images/products.jpg";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/features/cart/cartSlice";
 import { toast } from "sonner";
+import { Star, ChevronRight, ShoppingCart, Zap } from "lucide-react";
+import SuggestedProducts from "./SuggestedProducts";
 
 const ViewDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { data } = useAllProductsQuery(undefined);
 
-  // Find the product by ID
   const product: TProduct | undefined = data?.data?.find(
     (item: TProduct) => item._id === id
   );
 
-  // Handle Add to Cart
   const handleCart = (selectedProduct: TProduct | undefined) => {
     if (!selectedProduct) return;
 
-    // Dispatch to Redux with required fields
     dispatch(
       addToCart({
         id: selectedProduct._id,
         name: selectedProduct.name,
         price: selectedProduct.price,
-        quantity: 1, // Default to 1 when adding to cart
+        quantity: 1,
         image: productImg,
-      }),
-      toast("product added to the cart successfully")
+      })
     );
+    toast.success("Product added to cart");
+  };
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+      },
+    },
   };
 
   return (
-    <div className="min-h-screen my-32 bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Breadcrumb Navigation */}
-        <nav className="flex mb-8" aria-label="Breadcrumb">
-          <ol className="inline-flex items-center space-x-1 md:space-x-3">
-            <li className="inline-flex items-center">
-              <NavLink
-                to="/"
-                className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-blue-600"
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="min-h-screen"
+    >
+      {/* Product Section */}
+      <div className="bg-[#101B1F]/95 text-white pt-24 pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Breadcrumb */}
+          <motion.nav
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="flex mb-8"
+          >
+            <ol className="inline-flex items-center space-x-1 md:space-x-2">
+              <motion.li
+                variants={itemVariants}
+                className="inline-flex items-center"
               >
-                <svg
-                  className="w-3 h-3 mr-2.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
+                <NavLink
+                  to="/"
+                  className="inline-flex items-center text-sm font-medium text-gray-300 hover:text-white transition-colors"
                 >
-                  <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
-                </svg>
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <div className="flex items-center">
-                <svg
-                  className="w-3 h-3 text-gray-400 mx-1"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 6 10"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 9 4-4-4-4"
-                  />
-                </svg>
-                <span className="ml-1 text-sm font-medium text-gray-700 md:ml-2">
-                  {product?.category || "Product"}
-                </span>
-              </div>
-            </li>
-            <li aria-current="page">
-              <div className="flex items-center">
-                <svg
-                  className="w-3 h-3 text-gray-400 mx-1"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 6 10"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 9 4-4-4-4"
-                  />
-                </svg>
-                <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2">
-                  {product?.name}
-                </span>
-              </div>
-            </li>
-          </ol>
-        </nav>
-
-        {/* Product Card */}
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-          <div className="md:flex">
-            {/* Product Image */}
-            <div className="md:w-1/2 p-6 flex items-center justify-center bg-gray-50">
-              <img
-                src={productImg}
-                alt={product?.name}
-                className="object-contain w-full h-96 rounded-lg"
-              />
-            </div>
-
-            {/* Product Details */}
-            <div className="md:w-1/2 p-8">
-              {/* Product Header */}
-              <div className="mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                  {product?.name}
-                </h1>
-                <div className="flex items-center mb-4">
-                  <span className="text-gray-500 text-sm">
-                    SKU: {product?._id?.slice(0, 8)}
+                  Home
+                </NavLink>
+              </motion.li>
+              <motion.li variants={itemVariants}>
+                <div className="flex items-center">
+                  <ChevronRight className="w-4 h-4 text-gray-400 mx-1" />
+                  <span className="ml-1 text-sm font-medium text-gray-300">
+                    {product?.category || "Product"}
                   </span>
                 </div>
-              </div>
+              </motion.li>
+              <motion.li variants={itemVariants} aria-current="page">
+                <div className="flex items-center">
+                  <ChevronRight className="w-4 h-4 text-gray-400 mx-1" />
+                  <span className="ml-1 text-sm font-medium text-white">
+                    {product?.name}
+                  </span>
+                </div>
+              </motion.li>
+            </ol>
+          </motion.nav>
 
-              {/* Price Section */}
-              <div className="mb-6">
-                <span className="text-3xl font-bold text-blue-600">
-                  ${product?.price}
-                </span>
+          {/* Product Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Product Image */}
+            <motion.div
+              variants={itemVariants}
+              className="bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden"
+            >
+              <motion.img
+                src={productImg}
+                alt={product?.name}
+                className="w-full h-full object-cover"
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5 }}
+              />
+            </motion.div>
+
+            {/* Product Info */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="space-y-6"
+            >
+              <motion.div variants={itemVariants}>
+                <h1 className="text-4xl font-bold tracking-tight">
+                  {product?.name}
+                </h1>
+                <div className="flex items-center mt-2">
+                  {[...Array(5)].map((_, i) =>
+                    i < 4 ? (
+                      <Star
+                        key={i}
+                        className="w-5 h-5 text-yellow-400 fill-yellow-400"
+                      />
+                    ) : (
+                      <Star key={i} className="w-5 h-5 text-gray-400" />
+                    )
+                  )}
+                  <span className="ml-2 text-sm text-gray-300">
+                    (24 reviews)
+                  </span>
+                </div>
+              </motion.div>
+
+              <motion.div variants={itemVariants} className="flex items-center">
+                <span className="text-3xl font-bold">${product?.price}</span>
                 {product?.inStock ? (
-                  <span className="ml-3 px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">
-                    In Stock ({product?.quantity} available)
+                  <span className="ml-4 px-3 py-1 text-xs font-medium bg-green-500/20 text-green-400 rounded-full">
+                    In Stock
                   </span>
                 ) : (
-                  <span className="ml-3 px-2 py-1 text-xs font-semibold text-red-800 bg-red-100 rounded-full">
+                  <span className="ml-4 px-3 py-1 text-xs font-medium bg-red-500/20 text-red-400 rounded-full">
                     Out of Stock
                   </span>
                 )}
-              </div>
+              </motion.div>
 
-              {/* Product Info */}
-              <div className="mb-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                  Description
-                </h3>
-                <p className="text-gray-600 mb-6">{product?.description}</p>
+              <motion.div variants={itemVariants}>
+                <p className="text-gray-300">{product?.description}</p>
+              </motion.div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-500">Brand</h4>
-                    <p className="text-gray-900">{product?.brand || "N/A"}</p>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-500">
-                      Category
-                    </h4>
-                    <p className="text-gray-900">
-                      {product?.category || "N/A"}
-                    </p>
-                  </div>
+              <motion.div
+                variants={itemVariants}
+                className="grid grid-cols-2 gap-4 text-sm"
+              >
+                <div>
+                  <p className="text-gray-400">Brand</p>
+                  <p className="font-medium">{product?.brand || "N/A"}</p>
                 </div>
-              </div>
+                <div>
+                  <p className="text-gray-400">Category</p>
+                  <p className="font-medium">{product?.category || "N/A"}</p>
+                </div>
+                <div>
+                  <p className="text-gray-400">SKU</p>
+                  <p className="font-medium">{product?._id?.slice(0, 8)}</p>
+                </div>
+              </motion.div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button
+              <motion.div
+                variants={itemVariants}
+                className="flex flex-col sm:flex-row gap-4 pt-4"
+              >
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => handleCart(product)}
                   disabled={!product?.inStock}
-                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex-1 ${
+                  className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
                     product?.inStock
-                      ? "bg-zinc-600 text-white hover:bg-zinc-800"
-                      : "bg-gray-00 text-gray-500 cursor-not-allowed"
+                      ? "bg-white text-[#101B1F] hover:bg-gray-100"
+                      : "bg-gray-600 text-gray-400 cursor-not-allowed"
                   }`}
                 >
+                  <ShoppingCart className="w-5 h-5" />
                   Add to Cart
-                </button>
-
-                <NavLink
-                  to="/checkout"
-                  onClick={() => handleCart(product)}
-                  className={`px-6 py-3 rounded-lg font-semibold text-center transition-all duration-300 flex-1 ${
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    handleCart(product);
+                    // Navigate programmatically or use NavLink
+                  }}
+                  disabled={!product?.inStock}
+                  className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
                     product?.inStock
-                      ? "bg-lime-600 text-white hover:bg-lime-900"
-                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      ? "bg-amber-500 text-white hover:bg-amber-600"
+                      : "bg-gray-600 text-gray-400 cursor-not-allowed"
                   }`}
                 >
+                  <Zap className="w-5 h-5" />
                   Buy Now
-                </NavLink>
-              </div>
-            </div>
+                </motion.button>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Suggested Products Section */}
+      <div className="bg-[#101B1F]/95 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SuggestedProducts />
+        </div>
+      </div>
+    </motion.div>
   );
 };
 

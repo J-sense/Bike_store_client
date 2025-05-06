@@ -9,6 +9,7 @@ import NewsLatter from "../../components/ui/NewsLatter";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import Ridding from "./Ridding";
 import BrandSection from "./Brand";
+import ProductBanner from "../../components/ui/Tranding";
 
 const images: string[] = [img1, img2, img3];
 
@@ -115,6 +116,7 @@ const Home = () => {
       {/* Page sections */}
       <HomepageSectionOne />
       <ExtraSection />
+      <ProductBanner />
       <BrandSection />
       <Ridding />
       <NewsLatter />

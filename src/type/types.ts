@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export type TUSer = {
   email: string;
   exp: number;
@@ -6,6 +8,7 @@ export type TUSer = {
 };
 
 export type TProduct = {
+  discount?: ReactNode;
   image: string;
   brand: string;
   category: string;

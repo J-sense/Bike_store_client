@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { NavLink, useParams } from "react-router-dom";
+import { Link, NavLink, useParams } from "react-router-dom";
 import { useAllProductsQuery } from "../../redux/features/products/Products.Api";
 import { TProduct } from "../../type/types";
 import productImg from "../../assets/images/products.jpg";
@@ -201,23 +201,25 @@ const ViewDetails = () => {
                   <ShoppingCart className="w-5 h-5" />
                   Add to Cart
                 </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => {
-                    handleCart(product);
-                    // Navigate programmatically or use NavLink
-                  }}
-                  disabled={!product?.inStock}
-                  className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
-                    product?.inStock
-                      ? "bg-amber-500 text-white hover:bg-amber-600"
-                      : "bg-gray-600 text-gray-400 cursor-not-allowed"
-                  }`}
-                >
-                  <Zap className="w-5 h-5" />
-                  Buy Now
-                </motion.button>
+                <Link to="/checkout">
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      handleCart(product);
+                      // Navigate programmatically or use NavLink
+                    }}
+                    disabled={!product?.inStock}
+                    className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                      product?.inStock
+                        ? "bg-amber-500 text-white hover:bg-amber-600"
+                        : "bg-gray-600 text-gray-400 cursor-not-allowed"
+                    }`}
+                  >
+                    <Zap className="w-5 h-5" />
+                    Buy Now
+                  </motion.button>
+                </Link>
               </motion.div>
             </motion.div>
           </div>

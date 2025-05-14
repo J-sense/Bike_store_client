@@ -23,10 +23,17 @@ const authApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    allUser: builder.query({
+      query: () => ({
+        url: "/auth/all",
+        method: "GET",
+      }),
+    }),
   }),
 });
 export const {
   useLoginMutation,
   useRegisterUserMutation,
   useUpdatePasswordMutation,
+  useAllUserQuery,
 } = authApi;

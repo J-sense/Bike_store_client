@@ -4,6 +4,7 @@ import CreateProducts from "../pages/admin/CreateProducts";
 import GetAllProducts from "../pages/admin/GetAllProducts";
 import { NavLink } from "react-router-dom";
 import AllOrder from "../pages/admin/AllOrder";
+import Myprofil from "../pages/admin/Myprofil";
 // import AllProducts from "../pages/mainlayout/AllProducts";
 
 export type TSidebarItems = {
@@ -45,6 +46,11 @@ export const adminPaths = [
         element: <GetAllProducts />,
       },
     ],
+  },
+  {
+    name: "My Profile",
+    path: "my-profile",
+    element: <Myprofil />,
   },
 ];
 // export const adminRoutes = adminPaths.reduce((acc: TRoute[], item) => {

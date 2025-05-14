@@ -1,27 +1,22 @@
 import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
-
-const { Header, Content } = Layout;
+import DHeader from "./DashboradNavbar";
+import { Content } from "antd/es/layout/layout";
 
 const DashboardLayout: React.FC = () => {
   return (
-    <Layout className="h-screen">
-      {/* Sidebar */}
-      <Sidebar />
+    <Layout className="bg-gray-100 min-h-screen md:pl-[250px] pl-0 relative">
+      {/* Sidebar (hidden on small screens) */}
+      <div className="hidden md:block fixed left-0 top-0 h-full w-[250px] z-50">
+        <Sidebar />
+      </div>
 
-      {/* Main Layout */}
+      {/* Main Content */}
       <Layout className="bg-gray-100">
-        {/* Header with Custom Color */}
-        <Header className=" shadow-md px-6 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-white">
-            Bike Shop Dashboard
-          </h2>
-        </Header>
-
-        {/* Content Section */}
+        <DHeader />
         <Content className="p-4 md:p-6">
-          <div className="bg-white shadow-md rounded-lg p-6 min-h-[80vh]">
+          <div className="bg-white shadow-md rounded-lg p-4 sm:p-6 min-h-[80vh]">
             <Outlet />
           </div>
         </Content>

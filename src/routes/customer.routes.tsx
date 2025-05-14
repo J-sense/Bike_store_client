@@ -1,5 +1,6 @@
 import CustomerDashboard from "../pages/customer/CustomerDashboard";
 import CustomerOrders from "../pages/customer/CustomerOrders";
+import Myprofil from "../pages/customer/Profile";
 import ProfileUpdating from "../pages/customer/ProfileUpdating";
 
 export const customerPaths = [
@@ -20,8 +21,13 @@ export const customerPaths = [
     ],
   },
   {
-    name: "Your Profile",
+    name: "Profile",
     children: [
+      {
+        name: "My Profile",
+        path: "my-profile",
+        element: <Myprofil />,
+      },
       {
         name: "Update Profile",
         path: "update-profile",

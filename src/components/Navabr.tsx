@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { FaBars, FaTimes, FaShoppingCart } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -11,6 +12,12 @@ const Navbar = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.auth.user);
+  const role = (
+    user as {
+      role: any;
+      email?: string;
+    }
+  )?.role;
   const cartItems = useAppSelector((state) => state.cart.items);
   const cartItemCount = cartItems.reduce(
     (total, item) => total + item.quantity,
@@ -80,7 +87,7 @@ const Navbar = () => {
             {user ? (
               <>
                 <NavLink
-                  to="/dashboard"
+                  to={`${role}/dashboard`}
                   className="px-3 py-1.5 text-sm font-medium rounded-md text-slate-400 hover:bg-gray-800/50 hover:text-yellow-400 transition-all"
                 >
                   Dashboard
@@ -230,7 +237,7 @@ const Navbar = () => {
             {user ? (
               <>
                 <NavLink
-                  to="/dashboard"
+                  to={`${role}/dashboard`}
                   onClick={toggleMenu}
                   className="block text-xl font-medium text-gray-300 hover:text-yellow-400 transition-all py-3"
                 >
